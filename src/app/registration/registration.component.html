@@ -1,0 +1,167 @@
+<!-- <h4 class="form-heading">Distributor Registration</h4> -->
+<form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="container-fluid mt-5 p-4 border rounded bg-light shadow-sm">
+  <!-- <h2 class="mb-4 text-center"></h2> -->
+  <h4 class="fw-bold py-3 mb-4 text-center">
+    <span class="text-muted fw-light">Registration </span>  Distributor
+  </h4>
+
+  <!-- Personal Information -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="first_name" class="form-label">First Name:</label>
+      <input id="first_name" formControlName="first_name" type="text" class="form-control" />
+    </div>
+    <div class="col-md-6">
+      <label for="last_name" class="form-label">Last Name:</label>
+      <input id="last_name" formControlName="last_name" type="text" class="form-control" />
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="userName" class="form-label">Username:</label>
+      <input id="userName" formControlName="userName" type="text" class="form-control" />
+    </div>
+    <div class="col-md-6">
+      <label for="password" class="form-label">Password:</label>
+      <input id="password" formControlName="password" type="password" class="form-control" />
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="securityQuestion" class="form-label">Security Question:</label>
+      <input id="securityQuestion" formControlName="securityQuestion" type="text" class="form-control" />
+    </div>
+    <div class="col-md-6">
+      <label for="securityAnswer" class="form-label">Security Answer:</label>
+      <input id="securityAnswer" formControlName="securityAnswer" type="text" class="form-control" />
+    </div>
+  </div>
+
+  <!-- Company Information -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="companyCode" class="form-label">Company Code:</label>
+      <input id="companyCode" formControlName="companyCode" type="text" class="form-control" />
+    </div>
+    <div class="col-md-6">
+      <label for="companyName" class="form-label">Company Name:</label>
+      <input id="companyName" formControlName="companyName" type="text" class="form-control" />
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="contactPersonName" class="form-label">Contact Person Name:</label>
+      <input id="contactPersonName" formControlName="contactPersonName" type="text" class="form-control" />
+    </div>
+    <div class="col-md-6">
+      <label for="mobile" class="form-label">Mobile Number:</label>
+      <input id="mobile" formControlName="mobile" type="text" class="form-control" />
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="email" class="form-label">Email:</label>
+      <input id="email" formControlName="email" type="email" class="form-control" />
+    </div>
+    <div class="col-md-6">
+      <label for="pannum" class="form-label">PAN Number:</label>
+      <input id="pannum" formControlName="pannum" type="text" class="form-control" />
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="gstin" class="form-label">GSTIN:</label>
+      <input id="gstin" formControlName="gstin" type="text" class="form-control" />
+    </div>
+  </div>
+
+  <!-- Address Information -->
+  <div formGroupName="addressReq" class="mb-4">
+    <h4 class="mb-3">Address Information</h4>
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="short_name" class="form-label">Short Name:</label>
+        <input id="short_name" formControlName="short_name" type="text" class="form-control" />
+      </div>
+      <div class="col-md-4">
+        <label for="line1" class="form-label">Line 1:</label>
+        <input id="line1" formControlName="line1" type="text" class="form-control" />
+      </div>
+      <div class="col-md-4">
+        <label for="line2" class="form-label">Line 2:</label>
+        <input id="line2" formControlName="line2" type="text" class="form-control" />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <!-- <div class="col-md-4">
+        <label for="line3" class="form-label">Line 3:</label>
+        <input id="line3" formControlName="line3" type="text" class="form-control" />
+      </div> -->
+      <div class="col-md-4">
+        <label for="geo_tag" class="form-label">Geo Tag:</label>
+        <input id="geo_tag" formControlName="geo_tag" type="text" class="form-control" />
+      </div>
+      <div class="col-md-4">
+        <label for="journey_id" class="form-label">Journey ID:</label>
+        <input id="journey_id" formControlName="journey_id" type="number" class="form-control" />
+      </div>
+      <div class="col-md-4">
+        <label for="country" class="form-label">Country:</label>
+        <select id="country" formControlName="country" class="form-select" (ngModelChange)="selectState($event)" >
+          <option *ngFor="let option of country?.data" [value]="option.countryCode" >
+            {{ option.countryName }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row mb-3">
+     
+      <div class="col-md-4">
+        <label for="state_name" class="form-label">State:</label>
+        <select id="state_name" formControlName="state_name" class="form-select" (ngModelChange)="selectCity($event)">
+          <option *ngFor="let option of state?.data" [value]="option.id" >
+            {{ option.stateName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="city" class="form-label">City:</label>
+        <select id="city" formControlName="city" class="form-select" (ngModelChange)="selectLocality($event)">
+          <option *ngFor="let city of cities" [value]="city.id">{{ city.cityName }}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="country" class="form-label">Locality:</label>
+        <select id="city" formControlName="localityId" class="form-select" >
+          <option *ngFor="let city of locality" [value]="city.localityName">{{ city.localityName }}</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="address" class="form-label">Address:</label>
+        <input id="address" formControlName="address" type="text" class="form-control" />
+      </div>
+      <div class="col-md-4">
+        <label for="pin_code" class="form-label">PIN Code:</label>
+        <input id="pin_code" formControlName="pin_code" type="text" class="form-control" />
+      </div>
+      <div class="col-md-2">
+        <label for="is_verified" class="form-label">Is Verified:</label>
+        <input id="is_verified" formControlName="is_verified" type="checkbox" class="form-check-input" />
+      </div>
+      <div class="col-md-2">
+        <label for="is_default" class="form-label">Is Default:</label>
+        <input id="is_default" formControlName="is_default" type="checkbox" class="form-check-input" />
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-dark " style="width: 150px;">Register</button>
+</form>

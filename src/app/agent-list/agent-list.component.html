@@ -1,0 +1,213 @@
+<div class="navbar-nav align-items-center ">
+  <!-- <div class=" d-flex align-items-center w-50 p-4">
+    <i class="bx bx-search fs-4 lh-0"></i>
+    <input
+      type="text"
+      class="form-control  shadow"
+      placeholder="Search..."
+      name="search" [(ngModel)]="searchText" 
+    />
+  </div> -->
+  <div class="input-group m-t-15"><input  type="text"
+    class="form-control  shadow"
+    placeholder="Search..."
+    name="search" [(ngModel)]="searchText"  class="form-control">
+    <div class="input-group-append"><button class="btn btn-primary"><i _ngcontent-sdg-c54="" class="feather icon-message-circle"></i></button></div></div>
+</div>
+<!-- /Search -->
+<div class="table-responsive text-nowrap table-striped mt-4">
+  <table class="table">
+    <thead class="table-light">
+<!-- <table id="example" class="  display nowrap table table-hover table-striped table-bordered table-sm" style="width:100%"> -->
+        <!-- <thead> -->
+            <tr>
+                <th>Customer Name</th>
+                <th>Email</th>
+                <th>Mobile No</th>
+               
+                <th>Adhaar Number</th>
+               
+                <th>Status</th>
+                <th> User Type</th>
+                <th>Actions</th>
+              
+            </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users | filter : searchText">
+              <ng-container *ngIf="!user.isEditing">
+              <td>{{user.first_name}} {{user.last_name}}</td>
+              <td>{{user.email}}</td>
+              <td>{{user.mobile}}</td>
+              <td>{{user.aadharnum}}</td>
+              <td>{{user.active}}</td>
+              <td *ngIf="user.userType==2">Customer</td>
+              <td *ngIf="user.userType==3">Agent</td>
+              <!-- <td style="text-align: text-center"><i class="fa fa-map-pin" aria-hidden="true" (click)="fetchPincodes(user.id)" data-bs-toggle="modal" data-bs-target="#pincodesPop"></i></td> -->
+          </ng-container>
+              <ng-container *ngIf="user.isEditing">
+              <td ><input [(ngModel)]="user.first_name" [readonly]="!user.isEditing" class="form-control"></td>
+              <td><input [(ngModel)]="user.email" [readonly]="!user.isEditing" class="form-control"></td>
+              <td><input [(ngModel)]="user.mobile" [readonly]="!user.isEditing" class="form-control"></td>
+              <td><input [(ngModel)]="user.aadharnum" [readonly]="!user.isEditing" class="form-control"></td>
+              <td> <select name="" id="" [(ngModel)]="user.active">
+                    <option  *ngFor="let option of activeStatus" [value]="option">{{option}}</option>
+              </select></td>
+              <td *ngIf="user.userType==2">Customer</td>
+              <td *ngIf="user.userType==3">Agent</td>
+          </ng-container>
+              
+              <td class="d-flex">
+                <i *ngIf="!user.isEditing" class="fa fa-edit p-2" title="Edit Details" (click)="editUser(user)"></i>  
+              
+                <button *ngIf="user.isEditing" (click)="saveUser(user)" class="btn btn-block">Save</button>
+                <!-- <i class="fa fa-address-card p-1" title="Address" data-bs-toggle="modal" data-bs-target="#pincodeSelectPop" (click)="fetchPincodes(user.distributor_id,user.id)"></i> -->
+                <a ><i class="fa fa-map-pin p-2" aria-hidden="true"  data-bs-toggle="modal" data-bs-target="#pincodeSelectPop" (click)="fetchPincodes(user.distributor_id,user.id)" ></i></a>
+                <a *ngIf="user.userType==2" [routerLink]="['/address/',user.mobile,user.id]" ><i class="fa fa-book p-2" aria-hidden="true" title="Address" ></i></a>
+                <a *ngIf="user.userType==3"> <i class="fa fa-book p-2" data-bs-toggle="modal" data-bs-target="#allocatedPin" aria-hidden="true" title="Allocated Pin code" (click)="getAllocatedPincodes(user.id)" ></i></a>
+                <a *ngIf="user.userType==2" [routerLink]="['/subscribe',user.created_by,user.id]"> <i class="fa fa-shopping-cart p-2" aria-hidden="true" style="color: green;"></i></a>
+                <!-- <a *ngIf="user.userType==2"> <i class="fa fa-book p-2" data-bs-toggle="modal" data-bs-target="#allocateAgent" aria-hidden="true" title="Allocate Agent" (click)="getAllocatedPincodes(user.id)" ></i></a> -->
+              </td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+  
+
+  <div class="modal fade" id="pincodeSelectPop" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-bas-dismiss="modal" aria-bs-label="Close">
+            <span aria-bs-hidden="true">&times;</span>
+          </button>
+        </div> -->
+        <div class="modal-body">
+          <table id="example" class="  display nowrap table table-hover table-striped table-bordered table-sm" style="width:100%">
+            <thead>
+                <tr>
+
+                    <th>Pincodes</th>
+                   
+                  
+                </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pin of pincodes">
+                
+                  
+                  <td><input type="checkbox" (click)="selectPinCodes(pin.pincode)" [checked]="pin.allocated==1"> {{pin.pincode}}</td>
+                 
+                  
+             
+            
+                  
+                
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="allocatePinCode()" >Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+  <div class="modal fade" id="allocatedPin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-bas-dismiss="modal" aria-bs-label="Close">
+            <span aria-bs-hidden="true">&times;</span>
+          </button>
+        </div> -->
+        <div class="modal-body">
+          <table id="example" class="  display nowrap table table-hover table-striped table-bordered table-sm" style="width:100%">
+            <thead>
+                <tr>
+
+                    <th>Pincodes</th>
+                   
+                  
+                </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pin of picnCollection">
+                
+                  
+                  <td> {{pin}}</td>
+                 
+                  
+             
+            
+                  
+                
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="allocatePinCode()">Save changes</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="modal fade" id="customerAddress" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-bas-dismiss="modal" aria-bs-label="Close">
+            <span aria-bs-hidden="true">&times;</span>
+          </button>
+        </div> -->
+        <div class="modal-body">
+       
+         <table id="address" class="  display nowrap table table-hover table-striped table-bordered table-sm" style="width:100%">
+            <thead>
+                <tr>
+                  <th></th>
+                  <th>Address</th>
+                  <th>City</th>
+                    <th>Customer Pincode</th>
+                    <th>Delivery Agents</th>
+                   
+                  
+                </tr>
+            </thead>
+            <tbody>
+              <tr >
+                  
+                  <ng-container *ngFor="let add of customerAddress">
+                  <td><input type="radio" (change)="caputreCustomerData(add)"></td>
+                  <td> {{add.address}}</td>
+                  <td> {{add.city}}</td>
+                  <td> {{add.pin_code}}</td>
+                  
+                  </ng-container>
+             <ng-container *ngFor="let agent of agentPincode">
+                <td >{{agent.pincode}}</td>
+             </ng-container>
+            
+                  
+                
+                </tr>
+            </tbody>
+        </table>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="assignAgentPincodes()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
